@@ -1,0 +1,11 @@
+# virtualenv
+venv/
+
+# IPython Notebook
+.ipynb_checkpoints
+
+# Distribution  / packaging
+.Python
+
+# Data
+data/images
