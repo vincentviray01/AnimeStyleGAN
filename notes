@@ -1,0 +1,25 @@
+the noise is of size [batch_size, image_size, image_size, 1]
+
+when doing nn.Linear(x, y), as long as x ends with x, such as torch tensor of size (3, 5, 8, x), it works
+
+adding two lists just concatenates then, i.e. [((3, 4), 5)] + [((5, 6), 5)] = [ ((3, 4), 5), ((5, 6), 5)]
+
+
+mixed_list size = [(batch_size, t, latent_dim) + (batch_size, layers - t, latent_dim)]
+
+styles_to_tensor - (batch_size, 1, t, latent_dim)
+
+multiplying two torch tensors will do element wise multiplication
+
+
+image noise = (batch_size, image_size, image_size 1) in order to fit into layer to make the last dimension into the number of filters
+
+stylevectors orignally (mixed list) - [((batch_size, latent_size), t_layers) ,((batch_size, latent_size), layers - t_layers)]
+
+styles_def_to_tensor function changes above to (batch_size, layers, latent_size), looking like
+
+when using zip with a tensor, zip will iterate over the first dimension of the tensor
+
+F.conv2d: filters - [out_channels, in_channels, kernel_height, kernel_width]
+            input - [minibatch_size, in_channels, input_height, input_width]
+

@@ -5,6 +5,8 @@ from torch.utils.data import DataLoader
 import torchvision.datasets as Datasets
 from matplotlib import pyplot as plt
 import numpy as np
+from torch.autograd import grad
+from models import MappingNetwork
 from PIL import Image
 import glob
 from pathlib import Path
@@ -22,7 +24,7 @@ from pathlib import Path
 #         Image.open(self.images[index]).show()
 
 
-def getDataLoader(args):
+def getDataLoader(batch_size, image_size):
     """
     Loads the data loader for StyleGAN2 and applies preprocessing steps to it
     :param pathname: the name of the path to the folder containing the data
@@ -30,16 +32,17 @@ def getDataLoader(args):
     :return: the custom dataset
     """
     transform = transforms.Compose([
-        transforms.Resize(args.img_size),
-        transforms.CenterCrop(args.img_size),
+        transforms.Resize(image_size),
+        transforms.CenterCrop(image_size),
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
-    customDataset = Datasets.ImageFolder(root = 'data/images', transform = transform)
-    dataLoader = DataLoader(customDataset, batch_size = args.batch_size, shuffle = True)
+    customDataset = Datasets.ImageFolder(root='data/images', transform=transform)
+    dataLoader = DataLoader(customDataset, batch_size=batch_size, shuffle=True)
 
     return dataLoader
+
 
 def showImage(image):
     """
@@ -51,31 +54,37 @@ def showImage(image):
     plt.imshow(image[0].squeeze(0).permute(1, 2, 0))
     plt.show()
 
-def createNoise(batch_size, latent_size):
-    return torch.empty(batch_size, latent_size).normal_(mean=0, std=0.5)#np.random.normal(0, 1, size = [batch_size, latent_size]).astype('float32')
 
-def createNoiseList(batch_size, latent_size, num_layers):
-    return [createNoise(batch_size, latent_size)] * num_layers
+def create_image_noise(batch_size, image_size, device):
+    return torch.FloatTensor(batch_size, image_size, image_size, 1).uniform_(0, 1).to(device)
 
-def createMixedNoise(batch_size, latent_size, num_layers):
+
+def createNoise(batch_size, latent_size, device):
+    return torch.empty(batch_size, latent_size).normal_(mean=0,
+                                                        std=0.5).to(device)  # np.random.normal(0, 1, size = [batch_size, latent_size]).astype('float32')
+
+
+def createStyleNoiseList(batch_size, latent_size, num_layers, StyleVectorizer, device):
+    return StyleVectorizer(createNoise(batch_size, latent_size, device))[:, None, :].expand(-1, int(num_layers), -1)
+
+
+def createStyleMixedNoiseList(batch_size, latent_size, num_layers, StyleVectorizer, device):
     randomCut = np.random.randint(num_layers)
-    first_part = [createNoise(batch_size, latent_size)]* randomCut
-    second_part = [createNoise(batch_size, latent_size)] * (num_layers - randomCut)
-    return first_part + second_part
+    return torch.cat((createStyleNoiseList(batch_size, latent_size, randomCut, StyleVectorizer, device),
+                      createStyleNoiseList(batch_size, latent_size, (num_layers - randomCut), StyleVectorizer, device)), dim=1)
 
 
-def gradientPenalty(predictions, samples):  #TODO
-    predictions.backward(samples)
-    gradients = predictions.grad
-    gradients_square = gradients**2
-    gradients_penalty = np.sum(gradients_square, axis=0)
+def gradientPenalty(images, probability_of_real, device):
+    gradients = grad(outputs=probability_of_real, inputs=images, create_graph = True, retain_graph=True).to(device)
+    gradients = gradients.view(images.shape[0], -1)
+    return torch.sum(gradients.square(), axis=1).mean()
 
-    return torch.norm(gradients_penalty)
 
 def init_weights(m):
     if type(m) == nn.Linear:
         torch.nn.init.xavier_uniform(m.weight)
 
 
-
-
+def set_requires_grad(model, bool):
+    for p in model.parameters():
+        p.requires_grad = bool
