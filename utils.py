@@ -75,7 +75,8 @@ def createStyleMixedNoiseList(batch_size, latent_size, num_layers, StyleVectoriz
 
 
 def gradientPenalty(images, probability_of_real, device):
-    gradients = grad(outputs=probability_of_real, inputs=images, create_graph = True, retain_graph=True).to(device)
+
+    gradients = grad(outputs=probability_of_real, inputs=images, grad_outputs = torch.ones(probability_of_real.size()).cuda(), create_graph = True, retain_graph=True)[0]
     gradients = gradients.view(images.shape[0], -1)
     return torch.sum(gradients.square(), axis=1).mean()
 

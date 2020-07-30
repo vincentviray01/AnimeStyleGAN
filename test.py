@@ -1,5 +1,6 @@
 import torch
 import utils
+import models
 from torch.autograd import grad
 class Mask(torch.nn.Module):
     def __init__(self):
@@ -19,13 +20,13 @@ class Mask(torch.nn.Module):
 #     print(a)
 #     print(b)
 
-# print(utils.createStyleMixedNoiseList(1, 4, 5).size())
-# print(utils.createStyleMixedNoiseList(1, 4, 5)[:, 0:3, 1:3])
+print(utils.createStyleMixedNoiseList(1, 4, 5, models.MappingNetwork(), 'cpu').size())
+print(utils.createStyleMixedNoiseList(1, 4, 5, models.MappingNetwork(), 'cpu')[:, 0:3, 1:3])
 
 # print(torch.sqrt(torch.sum(torch.square(torch.randn(3,5, 5)))))
-if 1 == 3:
-    x = 2
-print(x)
+# if 1 == 3:
+#     x = 2
+# print(x)
 # lossfn = torch.nn.MSELoss()
 # x = Mask()
 # noise = torch.ones([1, 3, 4, 2], requires_grad=True)

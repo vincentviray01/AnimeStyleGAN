@@ -23,3 +23,5 @@ when using zip with a tensor, zip will iterate over the first dimension of the t
 F.conv2d: filters - [out_channels, in_channels, kernel_height, kernel_width]
             input - [minibatch_size, in_channels, input_height, input_width]
 
+okay so batch of image goes into conv layer, each image has a random style
+styles = [batch_size, num_layers, latent_dimension]
