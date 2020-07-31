@@ -20,10 +20,10 @@ batch_size = args.batch_size
 epochs = args.epochs
 quiet = args.quiet == True
 verbose = not quiet
-latent_dim = 512
+latent_dim = 256
 mixed_probability = 0.9
-discriminator_filters = 16
-generator_filters = 16
+discriminator_filters = 8
+generator_filters = 8
 pl_beta = 0.99
 
 if __name__ == '__main__':
@@ -31,7 +31,10 @@ if __name__ == '__main__':
     print("Using device: ", device)
     #model = StyleGan2Model()
     dataLoader = utils.getDataLoader(batch_size, image_size)
+    # print(len(dataLoader) / 10)
     Trainer = models.Trainer(batch_size, image_size, latent_dim, epochs, discriminator_filters, generator_filters, device, mixed_probability, pl_beta)
+    print("Apex available: ", Trainer.apex_available)
+    # Trainer.resetSaves()
     # x, y = next(enumerate(dataLoader))
     # x, y = next(enumerate(dataLoader))
     # print(y[0].size())
