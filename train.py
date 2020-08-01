@@ -38,5 +38,11 @@ if __name__ == '__main__':
     # x, y = next(enumerate(dataLoader))
     # x, y = next(enumerate(dataLoader))
     # print(y[0].size())
+    # for x in range(10):
+    #     try:
+    #         Trainer.train()
+    #     except Exception as e:
+    #         print(e)
+    #     print("one iteration")
     Trainer.train()
     print("DONE TRAINING")

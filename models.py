@@ -14,6 +14,7 @@ from torchvision.utils import make_grid
 try:
     from apex import amp
     apex_available = True
+    # amp.register_float_function(torch, 'sigmoid')
 except ModuleNotFoundError:
     apex_available = False
 from tqdm import tqdm
@@ -43,7 +44,7 @@ class Conv2DWeightDemod(nn.Module):
         weight = self.weight[None, :, :, :, :]
         weights = weight.clone() * style_vector_new
         demodulation_coefficient = torch.rsqrt((weights.pow(2)).sum([1, 2, 3], keepdims = True) + 1e-8)
-        weights = weights * demodulation_coefficient
+        weights = weights.clone() * demodulation_coefficient
 
         weights = weights.reshape(self.output_channels * weights.shape[0],self.input_channels, weights.shape[3], weights.shape[4])
         output = F.conv2d(input_vector, weights, padding = self.get_same_padding(input_vector.shape[3], self.kernel_size, dilation = self.dilation, stride = self.stride), groups = b)
@@ -214,14 +215,16 @@ class StyleGan(nn.Module):
         # self.GE.load_state_dict(self.generator.state_dict())
         # self.SE = Discriminator()
         # self.SE.load_state_dict(self.styleNetwork.state_dict())
-        self.generatorOptimizer = optim.Adam(self.generator.parameters(), lr = 0.00001, betas = (0.5, 0.9))
-        self.discriminatorOptimizer = optim.Adam(self.discriminator.parameters(), lr = 0.00001, betas = (0, 0.9))
-        amp.register_float_function(torch, 'sigmoid')
-        self.generator, self.generatorOptimizer = amp.initialize(self.generator, self.generatorOptimizer, opt_level="O1",
-                                                                 keep_batchnorm_fp32=None, loss_scale="dynamic")
+        self.generatorOptimizer = optim.Adam(self.generator.parameters(), lr = 0.001, betas = (0.5, 0.9))
+        self.discriminatorOptimizer = optim.Adam(self.discriminator.parameters(), lr = 0.001, betas = (0, 0.9))
+        # self.styleNetworkOptimizer = optim.Adam(self.styleNetwork.parameters(), lr = 0.001, betas = (0, 0.9))
+        self.generator, self.generatorOptimizer = amp.initialize(self.generator, self.generatorOptimizer, opt_level="O2",
+                                                                 keep_batchnorm_fp32=None, loss_scale="dynamic", max_loss_scale=2**13)
         self.discriminator, self.discriminatorOptimizer = amp.initialize(self.discriminator, self.discriminatorOptimizer,
-                                                                 opt_level="O1",
-                                                                 keep_batchnorm_fp32=None, loss_scale="dynamic")
+                                                                 opt_level="O2",
+                                                                 keep_batchnorm_fp32=None, loss_scale="dynamic", max_loss_scale=2**13)
+        self.styleNetwork = amp.initialize(self.styleNetwork, opt_level="O2", keep_batchnorm_fp32=None, loss_scale="dynamic", max_loss_scale=2**13)
+
     # Estimated Moving Average
     def EMA(self, beta = 0.99):
         for S_params, SE_params, G_params, GE_params in zip(self.S.parameters(), self.SE.parameters(), self.G.parameters(), self.GE_parameters()):
@@ -257,7 +260,7 @@ class Trainer():
         self.dataLoader = utils.getDataLoader(batch_size, image_size)
         self.mixed_probability = mixed_probability
         self.epochs = epochs
-        self.loss_fn = nn.BCELoss()
+        self.loss_fn = nn.BCEWithLogitsLoss()
         self.average_pl_length = 0
         self.pl_beta = pl_beta
         self.device = device
@@ -266,13 +269,18 @@ class Trainer():
         self.apex_available = apex_available
 
     def train(self, verbose=True):
+
         set_detect_anomaly(True)
         torch.cuda.empty_cache()
 
         # load last iteration if training was started but not finished
         if len(listdir("saves")) > 0:
-            self.StyleGan.load_state_dict(torch.load("saves/" + listdir("saves")[-1]))
-            self.checkpoint = int(listdir('saves')[-1][-4]) + 1
+            # the [4::-3] is because of the file name format, with the number of each checkpoint at these points
+            self.loadModel(sorted(listdir('saves'), key = lambda x: int(x[4: -3]))[-1][4:-3])
+            self.checkpoint = int(sorted(listdir('saves'), key = lambda x: int(x[4: -3]))[-1][4:-3])
+            print("Loading from checkpoint: ", self.checkpoint)
+            self.checkpoint = self.checkpoint + 1
+            print("New checkpoint starts at: ", self.checkpoint)
         else:
             self.StyleGan.init_weights()
             self.checkpoint = 0
@@ -286,15 +294,7 @@ class Trainer():
 
         # training loop
         for epoch in range(0, self.epochs):
-            self.saveModel(self.checkpoint)
             for batch_num, batch in enumerate(self.dataLoader):
-
-                discriminator_total_loss = 0
-                discriminator_average_real_loss = 0
-                discriminator_average_fake_loss = 0
-                discriminator_real_loss = 0
-                discriminator_fake_loss = 0
-                generator_loss = 0
 
                 batch = batch[0].to(self.device)
                 batch.requires_grad = True
@@ -316,24 +316,36 @@ class Trainer():
                 # transpose to match size with label tensor size
                 discriminator_real_output = torch.transpose(self.StyleGan.discriminator(batch), 0, 1).to(self.device)
 
-
+                real_labels = real_labels[None, :]
                 discriminator_real_loss = self.loss_fn(discriminator_real_output, real_labels)
+                del real_labels
                 discriminator_average_real_loss = discriminator_real_loss.mean().to(self.device)
 
+                del discriminator_real_loss
+
                 generated_images = self.StyleGan.generator(style_noise, image_noise).to(self.device)
-                fake_labels = (torch.ones(self.batch_size) * 0.1).to(self.device)
+                del style_noise
+                del image_noise
+                fake_labels = (torch.ones(self.batch_size) * 0.1)[None, :].to(self.device)
 
                 # transpose to match size with label tensor size
                 discriminator_fake_output = torch.transpose(self.StyleGan.discriminator(generated_images.detach()), 0, 1).to(self.device)
                 discriminator_fake_loss = self.loss_fn(discriminator_fake_output, fake_labels).to(self.device)
+                del fake_labels
                 discriminator_average_fake_loss = discriminator_fake_loss.mean().to(self.device)
+                del discriminator_fake_loss
+
 
                 discriminator_total_loss = discriminator_average_fake_loss + discriminator_average_real_loss
+
+
                 # discriminator_accuracy = 0
 
                 # Apply Gradient Penalty every 4 steps
                 if batch_num % 4 == 0:
-                    discriminator_total_loss += utils.gradientPenalty(batch, discriminator_real_output, self.device).detach()
+                    discriminator_total_loss = discriminator_total_loss +  utils.gradientPenalty(batch, discriminator_real_output, self.device).detach()
+
+                del discriminator_real_output
 
                 if self.apex_available:
                     with amp.scale_loss(discriminator_total_loss, self.StyleGan.discriminatorOptimizer) as scaled_loss:
@@ -358,10 +370,12 @@ class Trainer():
 
                 # Generate images
                 generated_images = self.StyleGan.generator(style_noise, image_noise).to(self.device)
+                del image_noise
 
                 generator_output = self.StyleGan.discriminator(generated_images).reshape(-1).to(self.device)
-                generator_loss = self.loss_fn(generator_output, generator_labels).to(self.device)
-                generator_loss = generator_loss.mean().to(self.device)
+                generator_loss = self.loss_fn(generator_output, generator_labels).mean().to(self.device)
+                del generator_output
+                del generator_labels
 
 
                 # Apply Path Length Regularization every 16 steps
@@ -379,14 +393,23 @@ class Trainer():
 
                     pl_regularizer = (pl_length - self.average_pl_length).mean().detach().to(self.device)
 
+                    del pl_gradient
+                    del num_pixels
+                    del noise_to_add
+                    del outputs
+                    del style_noise
+
+
                     if self.average_pl_length == 0:
                         self.average_pl_length == pl_length
 
                     self.average_pl_length = self.average_pl_length * self.pl_beta + (1 - self.pl_beta) * pl_length
 
-
+                    del pl_length
 
                     generator_loss = generator_loss + pl_regularizer
+
+                    del pl_regularizer
 
                     # Update average path length
 
@@ -399,8 +422,15 @@ class Trainer():
                 # generator_accuracy = generator_loss.argmax == generator_labels  # TODO
                 self.StyleGan.generatorOptimizer.step()
 
+                # Update MappingNetwork weights
+                # if self.apex_available:
+                #     with amp.scale_loss(generator_loss, self.StyleGan.generatorOptimizer) as scaled_loss:
+                #         scaled_loss.backward()
+                # else:
+                #     generator_loss.backward(retain_graph = True)
+
                 if verbose == True:
-                    if batch_num % (len(self.dataLoader) // 10) == 0:
+                    if batch_num % (len(self.dataLoader) // 20) == 0 and batch_num != 0:
                         print("Checkpoint")
                         print("Batch: ", batch_num)
                         print("Path Length Mean: ", self.average_pl_length)
@@ -410,10 +440,9 @@ class Trainer():
                         # print("Discriminator Accuracy: ", discriminator_accuracy)
                         print("Generator Loss: ", generator_loss)
                         # print("Generator Accuracy: ", generator_accuracy)
-
-                if batch_num % (len(self.dataLoader) // 10) == 0:
-                    # self.tensorboard_summary.add_graph(self.StyleGan.generator, (style_noise, image_noise))
-                    # self.tensorboard_summary.add_graph(self.StyleGan.discriminator, batch)
+                if batch_num % 100 == 0:
+                    print(batch_num)
+                if batch_num % (len(self.dataLoader) // 20) == 0 and batch_num != 0:
                     print("Current Checkpoint is: ", self.checkpoint)
                     img_grid = make_grid(generated_images)
                     self.tensorboard_summary.add_image(f'generated_image{self.checkpoint}', img_grid)
@@ -425,13 +454,22 @@ class Trainer():
                     self.tensorboard_summary.add_scalar('Discriminator Total Loss ', discriminator_total_loss.item(),
                                                         self.checkpoint)
                     self.tensorboard_summary.add_scalar('Generator Loss', generator_loss.item(), self.checkpoint)
+                    del img_grid
+                    del discriminator_average_real_loss
+                    del discriminator_average_fake_loss
+                    del discriminator_total_loss
+                    del generator_loss
+                    print("KIK WHAT")
+                    self.saveModel(self.checkpoint)
                     self.checkpoint = self.checkpoint + 1
+
 
                 # if steps > 20000:
                 #     self.StyleGan.EMA(0.99)
 
             # Create a checkpoint at the end of an epoch
             print("Current Checkpoint is: ", self.checkpoint)
+            print("Batch_num:", batch_num)
             img_grid = make_grid(generated_images)
             self.tensorboard_summary.add_image(f'generated_image{self.checkpoint}', img_grid)
             self.tensorboard_summary.add_scalar('Path Length Mean', self.average_pl_length, self.checkpoint)
@@ -442,7 +480,16 @@ class Trainer():
             self.tensorboard_summary.add_scalar('Discriminator Total Loss ', discriminator_total_loss.item(),
                                                 self.checkpoint)
             self.tensorboard_summary.add_scalar('Generator Loss', generator_loss.item(), self.checkpoint)
+
+            del img_grid
+            del discriminator_average_real_loss
+            del discriminator_average_fake_loss
+            del discriminator_total_loss
+            del generator_loss
+            self.saveModel(self.checkpoint)
             self.checkpoint = self.checkpoint + 1
+
+
 
         # Close TensorBoard at the end
         self.tensorboard_summary.close()
@@ -456,14 +503,19 @@ class Trainer():
         pass
 
     def saveModel(self, iteration):
-        save_dict = {'model': self.StyleGan.state_dict(),
+        save_dict = {'generatorModel': self.StyleGan.generator.state_dict(),
+                     'generatorModelOptimizer': self.StyleGan.generatorOptimizer.state_dict(),
+                     "discriminatorModel": self.StyleGan.discriminator.state_dict(),
+                     "discriminatorModelOptimizer": self.StyleGan.discriminatorOptimizer.state_dict(),
                      'amp': amp.state_dict()}
         torch.save(save_dict, f"saves/Gan-{iteration}.pt")
 
     def loadModel(self, iteration):
-        print("Continuing from iteration", iteration, "!")
         load_dict = torch.load(f"saves/Gan-{iteration}.pt")
-        self.StyleGan.load_state_dict(load_dict["model"])
+        self.StyleGan.generator.load_state_dict(load_dict["generatorModel"])
+        self.StyleGan.generatorOptimizer.load_state_dict(load_dict["generatorModelOptimizer"])
+        self.StyleGan.discriminator.load_state_dict(load_dict["discriminatorModel"])
+        self.StyleGan.discriminatorOptimizer.load_state_dict(load_dict["discriminatorModelOptimizer"])
         amp.load_state_dict(load_dict["amp"])
 
     def resetSaves(self):

@@ -4,7 +4,7 @@
     <list default="true" id="a7587a13-2420-4518-9daa-a6f882e7cbb7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../saves/Gan-0.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test.py" beforeDir="false" afterPath="$PROJECT_DIR$/../test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../train.py" beforeDir="false" afterPath="$PROJECT_DIR$/../train.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +36,27 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Python.train">
+    <configuration name="models" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="personal_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../models.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="python3" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="personal_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -91,7 +112,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../train.py" />
-      <option name="PARAMETERS" value="-i 128 -b 8 -e 1" />
+      <option name="PARAMETERS" value="-i 128 -b 1 -e 1" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -147,11 +168,13 @@
       <item itemvalue="Python.train" />
       <item itemvalue="Python.utils (1)" />
       <item itemvalue="Python.utils" />
+      <item itemvalue="Python.models" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.train" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.models" />
         <item itemvalue="Python.utils (1)" />
         <item itemvalue="Python.utils" />
       </list>
@@ -171,10 +194,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="291" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596217966215">
+    <state x="291" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596219175416">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state x="291" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.38.1920.1042@0.38.1920.1042" timestamp="1596217966215" />
+    <state x="291" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.38.1920.1042@0.38.1920.1042" timestamp="1596219175416" />
     <state x="1209" y="365" width="459" height="385" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1595461497224">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
@@ -187,22 +210,22 @@
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
     <state x="885" y="302" key="FileChooserDialogImpl/0.38.1920.1042@0.38.1920.1042" timestamp="1595688596215" />
-    <state width="1899" height="330" key="GridCell.Tab.0.bottom" timestamp="1596218186654">
+    <state width="1899" height="330" key="GridCell.Tab.0.bottom" timestamp="1596241011937">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state width="1899" height="330" key="GridCell.Tab.0.bottom/0.38.1920.1042@0.38.1920.1042" timestamp="1596218186654" />
-    <state width="1899" height="330" key="GridCell.Tab.0.center" timestamp="1596218186654">
+    <state width="1899" height="330" key="GridCell.Tab.0.bottom/0.38.1920.1042@0.38.1920.1042" timestamp="1596241011937" />
+    <state width="1899" height="330" key="GridCell.Tab.0.center" timestamp="1596241011937">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state width="1899" height="330" key="GridCell.Tab.0.center/0.38.1920.1042@0.38.1920.1042" timestamp="1596218186654" />
-    <state width="1899" height="330" key="GridCell.Tab.0.left" timestamp="1596218186654">
+    <state width="1899" height="330" key="GridCell.Tab.0.center/0.38.1920.1042@0.38.1920.1042" timestamp="1596241011937" />
+    <state width="1899" height="330" key="GridCell.Tab.0.left" timestamp="1596241011936">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state width="1899" height="330" key="GridCell.Tab.0.left/0.38.1920.1042@0.38.1920.1042" timestamp="1596218186654" />
-    <state width="1899" height="330" key="GridCell.Tab.0.right" timestamp="1596218186654">
+    <state width="1899" height="330" key="GridCell.Tab.0.left/0.38.1920.1042@0.38.1920.1042" timestamp="1596241011936" />
+    <state width="1899" height="330" key="GridCell.Tab.0.right" timestamp="1596241011937">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state width="1899" height="330" key="GridCell.Tab.0.right/0.38.1920.1042@0.38.1920.1042" timestamp="1596218186654" />
+    <state width="1899" height="330" key="GridCell.Tab.0.right/0.38.1920.1042@0.38.1920.1042" timestamp="1596241011937" />
     <state x="321" y="108" key="SettingsEditor" timestamp="1594411533890">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>

@@ -10,7 +10,8 @@ class Mask(torch.nn.Module):
     def forward(self, noise):
         return torch.nn.Linear(2, 5)(noise)
 
-
+import os
+print(sorted(os.listdir('saves'), key = lambda x: int(x[4: -3])))
 #
 # x = torch.randn(4, 2, 2, 3)
 # k = [1 , 2, 3]
@@ -20,8 +21,8 @@ class Mask(torch.nn.Module):
 #     print(a)
 #     print(b)
 
-print(utils.createStyleMixedNoiseList(1, 4, 5, models.MappingNetwork(), 'cpu').size())
-print(utils.createStyleMixedNoiseList(1, 4, 5, models.MappingNetwork(), 'cpu')[:, 0:3, 1:3])
+# print(utils.createStyleMixedNoiseList(1, 4, 5, models.MappingNetwork(), 'cpu').size())
+# print(utils.createStyleMixedNoiseList(1, 4, 5, models.MappingNetwork(), 'cpu')[:, 0:3, 1:3])
 
 # print(torch.sqrt(torch.sum(torch.square(torch.randn(3,5, 5)))))
 # if 1 == 3:
