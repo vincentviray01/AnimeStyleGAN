@@ -56,7 +56,7 @@ def showImage(image):
 
 
 def create_image_noise(batch_size, image_size, device):
-    return torch.FloatTensor(batch_size, image_size, image_size, 1).uniform_(0, 1).to(device)
+    return torch.randn(batch_size, image_size, image_size, 1).uniform_(0, 1).to(device)
 
 
 def createNoise(batch_size, latent_size, device):

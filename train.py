@@ -43,6 +43,7 @@ if __name__ == '__main__':
     #         Trainer.train()
     #     except Exception as e:
     #         print(e)
+    #         torch.cuda.empty_cache()
     #     print("one iteration")
     Trainer.train()
     print("DONE TRAINING")
