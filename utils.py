@@ -83,7 +83,7 @@ def gradientPenalty(images, probability_of_real, device):
 
 def init_weights(m):
     if type(m) == nn.Linear:
-        torch.nn.init.xavier_uniform(m.weight)
+        nn.init.xavier_uniform_(m.weight)
 
 
 def set_requires_grad(model, bool):
