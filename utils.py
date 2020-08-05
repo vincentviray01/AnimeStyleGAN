@@ -3,6 +3,7 @@ import torch.nn as nn
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 import torchvision.datasets as Datasets
+from torchvision.datasets import MNIST
 from matplotlib import pyplot as plt
 import numpy as np
 from torch.autograd import grad
@@ -35,10 +36,12 @@ def getDataLoader(batch_size, image_size):
         transforms.Resize(image_size),
         transforms.CenterCrop(image_size),
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
-    customDataset = Datasets.ImageFolder(root='data/images', transform=transform)
+    # customDataset = Datasets.ImageFolder(root='data/images', transform=transform)
+    # print(mnist)
+    customDataset =  MNIST('data/mnist', transform= transform)
     dataLoader = DataLoader(customDataset, batch_size=batch_size, shuffle=True)
 
     return dataLoader
@@ -51,8 +54,12 @@ def showImage(image):
     :return: void
     """
     plt.axis("off")
-    plt.imshow(image[0].squeeze(0).permute(1, 2, 0))
+    image = image.cpu().detach()
+    print(image.shape)
+    plt.imshow(image.squeeze(0).permute(1, 2, 0))
     plt.show()
+
+
 
 
 def create_image_noise(batch_size, image_size, device):
@@ -78,7 +85,8 @@ def gradientPenalty(images, probability_of_real, device):
 
     gradients = grad(outputs=probability_of_real, inputs=images, grad_outputs = torch.ones(probability_of_real.size()).cuda(), create_graph = True, retain_graph=True)[0]
     gradients = gradients.view(images.shape[0], -1)
-    return torch.sum(gradients.square(), axis=1).mean()
+    # print("in gradien t[enalty", gradients)
+    return torch.sum(gradients.square()).mean()
 
 
 def init_weights(m):

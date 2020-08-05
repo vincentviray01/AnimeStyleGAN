@@ -33,11 +33,20 @@ if __name__ == '__main__':
     dataLoader = utils.getDataLoader(batch_size, image_size)
     # print(len(dataLoader) / 10)
     Trainer = models.Trainer(batch_size, image_size, latent_dim, epochs, discriminator_filters, generator_filters, device, mixed_probability, pl_beta)
+    # print(Trainer.StyleGan)
+    # print(Trainer.StyleGan.generator.state_dict())
+    # print(sum(p.numel() for p in Trainer.StyleGan.parameters()))
+    # print(Trainer.StyleGan.discriminator.state_dict())
+
+    print(Trainer.StyleGan.generator.state_dict()['generatorBlocks.2.style_to_input_channels.weight'][0][0].item())
+    # print(Trainer.StyleGan.discriminator.state_dict()[])
     print("Apex available: ", Trainer.apex_available)
     # Trainer.resetSaves()
     # x, y = next(enumerate(dataLoader))
-    # x, y = next(enumerate(dataLoader))
-    # print(y[0].size())
+    x, y = next(enumerate(dataLoader))
+    # print(y[0])
+    # utils.showImage(y[0][0].expand(3, -1, -1))
+    # print(y[0].size())287
     # for x in range(10):
     #     try:
     #         Trainer.train()
@@ -45,5 +54,6 @@ if __name__ == '__main__':
     #         print(e)
     #         torch.cuda.empty_cache()
     #     print("one iteration")
-    Trainer.train()
+    # Trainer.train()
+    Trainer.evaluate()
     print("DONE TRAINING")

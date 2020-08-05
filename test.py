@@ -11,8 +11,32 @@ class Mask(torch.nn.Module):
         return torch.nn.Linear(2, 5)(noise)
 
 import os
-print(sorted(os.listdir('saves'), key = lambda x: int(x[4: -3])))
-#
+# print(sorted(os.listdir('saves'), key = lambda x: int(x[4: -3])))
+
+
+import gzip
+f = gzip.open('data/mnist/train-images-idx3-ubyte.gz','r')
+
+image_size = 28
+num_images = 60000
+
+import numpy as np
+f.read(16)
+buf = f.read(image_size * image_size * num_images)
+data = np.frombuffer(buf, dtype=np.uint8).astype(np.float32)
+data = data.reshape(num_images, image_size, image_size, 1)
+
+import matplotlib.pyplot as plt
+images = np.asarray(data)
+
+print(images[5999])
+
+plt.savefig('foo.png')
+
+plt.imshow(images[0].squeeze())
+plt.show()
+import torchvision
+torchvision.datasets.MNIST("data/mnist", train=True, transform=None, target_transform=None, download=True)
 # x = torch.randn(4, 2, 2, 3)
 # k = [1 , 2, 3]
 #

@@ -2,8 +2,54 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7587a13-2420-4518-9daa-a6f882e7cbb7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596227822.msigs65stealth9se.27842.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596228497.msigs65stealth9se.28633.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596229180.msigs65stealth9se.29436.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596229845.msigs65stealth9se.30216.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596230641.msigs65stealth9se.31187.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596231321.msigs65stealth9se.32031.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596232016.msigs65stealth9se.32914.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596234445.msigs65stealth9se.38173.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596234541.msigs65stealth9se.38330.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596234690.msigs65stealth9se.38656.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596235022.msigs65stealth9se.39373.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596235130.msigs65stealth9se.39501.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236145.msigs65stealth9se.41450.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236238.msigs65stealth9se.41522.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236315.msigs65stealth9se.41700.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236330.msigs65stealth9se.41751.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236371.msigs65stealth9se.41844.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236433.msigs65stealth9se.41944.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236512.msigs65stealth9se.42029.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236848.msigs65stealth9se.42306.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596236885.msigs65stealth9se.42505.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596237653.msigs65stealth9se.43545.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596238524.msigs65stealth9se.44492.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596239267.msigs65stealth9se.45128.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596240233.msigs65stealth9se.45804.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596241015.msigs65stealth9se.46395.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../runs/stylegan2/events.out.tfevents.1596293398.msigs65stealth9se.4799.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-1.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-10.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-11.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-13.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-14.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-16.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-17.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-18.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-19.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-2.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-20.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-3.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-4.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-5.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-7.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../saves/Gan-8.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test.py" beforeDir="false" afterPath="$PROJECT_DIR$/../test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../train.py" beforeDir="false" afterPath="$PROJECT_DIR$/../train.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/../utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,8 +77,13 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../usaidenv/ControllerPlacementRL/main.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../checkpoints" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/../checkpoints" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.train">
     <configuration name="models" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -111,7 +162,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../train.py" />
-      <option name="PARAMETERS" value="-i 128 -b 16 -e 1" />
+      <option name="PARAMETERS" value="-i 64 -b 128 -e 1000" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -193,10 +244,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="291" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596429893939">
+    <state x="291" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596651251558">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state x="291" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.38.1920.1042@0.38.1920.1042" timestamp="1596429893939" />
+    <state x="291" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.38.1920.1042@0.38.1920.1042" timestamp="1596651251558" />
     <state x="1209" y="365" width="459" height="385" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1595461497224">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
@@ -209,22 +260,22 @@
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
     <state x="885" y="302" key="FileChooserDialogImpl/0.38.1920.1042@0.38.1920.1042" timestamp="1595688596215" />
-    <state width="1899" height="329" key="GridCell.Tab.0.bottom" timestamp="1596430752646">
+    <state width="1899" height="329" key="GridCell.Tab.0.bottom" timestamp="1596651423514">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state width="1899" height="329" key="GridCell.Tab.0.bottom/0.38.1920.1042@0.38.1920.1042" timestamp="1596430752646" />
-    <state width="1899" height="329" key="GridCell.Tab.0.center" timestamp="1596430752645">
+    <state width="1899" height="329" key="GridCell.Tab.0.bottom/0.38.1920.1042@0.38.1920.1042" timestamp="1596651423514" />
+    <state width="1899" height="329" key="GridCell.Tab.0.center" timestamp="1596651423513">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state width="1899" height="329" key="GridCell.Tab.0.center/0.38.1920.1042@0.38.1920.1042" timestamp="1596430752645" />
-    <state width="1899" height="329" key="GridCell.Tab.0.left" timestamp="1596430752645">
+    <state width="1899" height="329" key="GridCell.Tab.0.center/0.38.1920.1042@0.38.1920.1042" timestamp="1596651423513" />
+    <state width="1899" height="329" key="GridCell.Tab.0.left" timestamp="1596651423512">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state width="1899" height="329" key="GridCell.Tab.0.left/0.38.1920.1042@0.38.1920.1042" timestamp="1596430752645" />
-    <state width="1899" height="329" key="GridCell.Tab.0.right" timestamp="1596430752645">
+    <state width="1899" height="329" key="GridCell.Tab.0.left/0.38.1920.1042@0.38.1920.1042" timestamp="1596651423512" />
+    <state width="1899" height="329" key="GridCell.Tab.0.right" timestamp="1596651423514">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
-    <state width="1899" height="329" key="GridCell.Tab.0.right/0.38.1920.1042@0.38.1920.1042" timestamp="1596430752645" />
+    <state width="1899" height="329" key="GridCell.Tab.0.right/0.38.1920.1042@0.38.1920.1042" timestamp="1596651423514" />
     <state x="321" y="108" key="SettingsEditor" timestamp="1594411533890">
       <screen x="0" y="38" width="1920" height="1042" />
     </state>
@@ -255,7 +306,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/../models.py</url>
-          <line>563</line>
+          <line>616</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
